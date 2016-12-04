@@ -23,7 +23,7 @@ set(CMAKE_MODULE_PATH ${DanceWall_SOURCE_DIR}/cmake)
 # set the QT_DIR and set up some other variables.
 if(WIN32)
 	# TODO:This works for Windows, MSVC 2012, 64 bits.  Need logic here based on the generator.
-	# NOTE: this may not be the best way to handle this, but this will help get the Nightly tests working for now.
+	# NOTE: this may not be the best way to handle this -- need to figure out the best path forward here.
     set(QT_DIR "C:\\Qt\\5.2.1\\msvc2012_64_opengl" CACHE PATH "Need to set the Qt prefix for various things.")
     set(CMAKE_LIBRARY_PATH "C:\\Program Files (x86)\\Windows Kits\\8.0\\Lib\\win8\\um\\x64" CACHE PATH "Qt5 requires this.")
 	# Need wzunzip.exe for Boost download on windows.
@@ -84,7 +84,8 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRs})
 
 set(DanceWall_SRCS
-	DanceWall.cpp)
+	DanceWall.cxx
+	)
 	
 set(DanceWall_HDRS
 	)
