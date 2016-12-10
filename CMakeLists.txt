@@ -85,10 +85,25 @@ include_directories(${OpenCV_INCLUDE_DIRs})
 
 set(DanceWall_SRCS
 	DanceWall.cxx
-	)
+	CartoonEffect.cxx
+	ColorEffect.cxx
+	ColorMapEffect.cxx
+	EdgeEffect.cxx
+	LineEffect.cxx
+	ThresholdEffect.cxx
+	WarpEffect.cxx
+	main.cxx)
 	
 set(DanceWall_HDRS
-	)
+	DanceWall.h
+	AbstractEffect.h
+	CartoonEffect.h
+	ColorEffect.h
+	ColorMapEffect.h
+	EdgeEffect.h 
+	LineEffect.h
+	ThresholdEffect.h
+	Warpeffect.h)
 
 add_executable(DanceWall ${DanceWall_SRCS} ${DanceWall_HDRS})
 target_link_libraries(DanceWall ${OpenCV_LIBS})
