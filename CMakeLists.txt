@@ -85,11 +85,13 @@ include_directories(${OpenCV_INCLUDE_DIRs})
 
 set(DanceWall_SRCS
 	DanceWall.cxx
+	AbstractEffect.cxx
 	CartoonEffect.cxx
 	ColorEffect.cxx
 	ColorMapEffect.cxx
 	EdgeEffect.cxx
 	LineEffect.cxx
+	MotionFlowEffect.cxx
 	ThresholdEffect.cxx
 	WarpEffect.cxx
 	main.cxx)
@@ -102,6 +104,7 @@ set(DanceWall_HDRS
 	ColorMapEffect.h
 	EdgeEffect.h 
 	LineEffect.h
+	MotionFlowEffect.h
 	ThresholdEffect.h
 	Warpeffect.h)
 

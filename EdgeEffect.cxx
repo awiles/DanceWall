@@ -37,5 +37,6 @@ void EdgeEffect::drawEffect()
 
 void EdgeEffect::togglePresets()
 {
-	//TODO: set-up code to toggle presets.
+	bool bColorMap = (this->m_bApplyColorMap)?false:true;
+	this->setColorMapApply(bColorMap);
 }

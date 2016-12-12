@@ -13,6 +13,7 @@ DanceWall::DanceWall()
 	m_effectMap[DW::lineEffect] = new LineEffect();
 	m_effectMap[DW::colorMapEffect] = new ColorMapEffect();
 	m_effectMap[DW::warpEffect] = new WarpEffect();
+	m_effectMap[DW::motionFlowEffect] = new MotionFlowEffect();
 	m_curEffect = DW::colorImage;
 
 	// set-up the videocapture object.
@@ -69,7 +70,7 @@ bool DanceWall::updateFrame()
 
 	// broadcast.
 	imshow("Dance Wall", this->m_outFrame); //show the frame 
-	
+
 	return true;
 }
 
@@ -77,6 +78,8 @@ bool DanceWall::onKeyPress( int keyPress)
 {
 	int effect = m_curEffect;
 	bool bSuccess = true;
+	bool bUnknown = false;
+	bool bParm = false;
 	switch((char)keyPress) 
 	{
 	case 'c': 
@@ -96,6 +99,7 @@ bool DanceWall::onKeyPress( int keyPress)
 		break;
 	case 'm': 
 		effect = DW::colorMapEffect;
+		cout << "Detected m key press..." << endl;
 		break;
 	case 'w': 
 		effect = DW::warpEffect;
@@ -103,16 +107,26 @@ bool DanceWall::onKeyPress( int keyPress)
 	case 'o':
 		effect = DW::motionFlowEffect;
 		break;
+	case 'p':  // toggle through different colormaps.
+		m_effectMap[m_curEffect]->toggleColorMaps();
+		bParm = true;
+		cout << "Detected p key press..." << endl;
+		break;
 	case 27: // 'esc' key
 		cout << "esc key pressed, exiting..." << endl;
 		bSuccess = false;
 		break;
+	case 'u': // print usage.
+		bParm = true;
+		cout << "TODO: Print the usage for the short cut keys." << endl;
+		break;
 	default:
-		effect = DW::colorImage;
+		cout << "Unrecognized key pressed: " << keyPress << endl;
+		bUnknown = true;
 		break;
 	}
 
-	if( bSuccess)
+	if( bSuccess && !bUnknown && !bParm)
 	{
 		if(m_curEffect == effect)
 		{
