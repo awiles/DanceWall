@@ -1,6 +1,9 @@
 #ifndef DW_LineEffect
 #define DW_LineEffect
 
+#define DW_LE_HOUGHLINE		0
+#define DW_LE_HOUGHLINEP	1
+
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include "AbstractEffect.h"
@@ -17,7 +20,7 @@ public:
 	void togglePresets();
 
 private:
-	
+	int m_effectOption;
 
 };
 #endif
