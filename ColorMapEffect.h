@@ -19,6 +19,6 @@ public:
 	void togglePresets();
 
 private:
-	int m_currentColorMap;		// current colormap being used.
+	
 };
 #endif

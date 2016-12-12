@@ -12,27 +12,22 @@ using namespace std;
 //create an abstract class for all the effects I am going to create.
 class AbstractEffect {
 public:
-	AbstractEffect()
-	{
-		//TODO: Initialize images.
-	}
-	virtual void init() = 0;			// initialize the set-up if needed.
-	void addNewFrame(Mat *frame) 		// copy in the latest frame
-	{
-		frame->copyTo(this->m_lastFrame);
-		return;
-	}
-	virtual void drawEffect() = 0;		// draw the intended effect.
-	void getOutFrame(Mat *frame)		// obtain the latest graphic
-	{
-		this->m_outFrame.copyTo(*frame);
-	}
-	virtual void togglePresets() = 0;				// toggle to the next set of presets.
+	AbstractEffect();
 	
+	virtual void init() = 0;			// initialize the set-up if needed.
+	void addNewFrame(Mat *frame); 		// copy in the latest frame	
+	virtual void drawEffect() = 0;		// draw the intended effect.
+	void getOutFrame(Mat *frame);		// obtain the latest graphic
+	virtual void togglePresets() = 0;	// toggle to the next set of presets.
+	void toggleColorMaps();				// toggle through the colormaps.
+	void setColorMapApply(bool bColorMap); // decide whether to use color map.
 
 protected:
 	Mat m_lastFrame; // latest frame from the video capture for processing.
 	Mat m_outFrame; // this is the frame that will be displayed.
+
+	int m_currentColorMap;		// current colormap being used.
+	bool m_bApplyColorMap;		// boolean that decides whether we apply the color map.
 
 };
 #endif
