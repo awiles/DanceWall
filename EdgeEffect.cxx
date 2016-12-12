@@ -3,15 +3,16 @@
 EdgeEffect::EdgeEffect()
 {
 	// constructor.
-	this->m_blurKernelSize = 3;
-	this->m_cannyThreshold1 = 10;
-	this->m_cannyThreshold2 = 30;
-	this->m_cannyApertureSize = 3;
+	this->init();
+	
 }
 
 void EdgeEffect::init()
 {
-	// nothing to initialize just yet.
+	this->m_blurKernelSize = 3;
+	this->m_cannyThreshold1 = 10;
+	this->m_cannyThreshold2 = 30;
+	this->m_cannyApertureSize = 3;
 	return;
 }
 
