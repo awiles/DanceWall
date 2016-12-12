@@ -77,28 +77,31 @@ bool DanceWall::onKeyPress( int keyPress)
 {
 	int effect = m_curEffect;
 	bool bSuccess = true;
-	switch(keyPress) 
+	switch((char)keyPress) 
 	{
-	case 99: // 'c'
+	case 'c': 
 		effect = DW::colorImage;
 		break;
-	case 116: // 't'
+	case 't': 
 		effect = DW::thresholdEffect;
 		break;
-	case 101: // 'e'
+	case 'e': 
 		effect = DW::edgeEffect;
 		break;
-	case 114: // 'r'
+	case 'r': 
 		effect = DW::cartoonEffect;
 		break;
-	case 108: // 'l'
+	case 'l': 
 		effect = DW::lineEffect;
 		break;
-	case 109: // 'm'
+	case 'm': 
 		effect = DW::colorMapEffect;
 		break;
-	case 119: // 'w'
+	case 'w': 
 		effect = DW::warpEffect;
+		break;
+	case 'o':
+		effect = DW::motionFlowEffect;
 		break;
 	case 27: // 'esc' key
 		cout << "esc key pressed, exiting..." << endl;
