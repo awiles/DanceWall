@@ -3,13 +3,15 @@
 ThresholdEffect::ThresholdEffect()
 {
 	// constructor.
-	this->m_thresholdLevel = 100;
-	this->m_thresholdType = THRESH_TRUNC;
+	this->init();
+	
 }
 
 void ThresholdEffect::init()
 {
-	// nothing to initialize just yet.
+	this->m_thresholdLevel = 100;
+	this->m_thresholdType = THRESH_BINARY;
+	this->m_bApplyColorMap = true;
 	return;
 }
 
@@ -33,5 +35,10 @@ void ThresholdEffect::drawEffect()
 
 void ThresholdEffect::togglePresets()
 {
-	//TODO: set-up code to toggle presets.
+	this->m_thresholdLevel += 50;
+
+	if(this->m_thresholdLevel > DW_MAX_THRESHOLD )
+	{
+		this->m_thresholdLevel = 50;
+	}
 }

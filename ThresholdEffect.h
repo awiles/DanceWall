@@ -1,6 +1,8 @@
 #ifndef DW_ThresholdEffect
 #define DW_ThresholdEffect
 
+#define DW_MAX_THRESHOLD 255
+
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include "AbstractEffect.h"
@@ -16,7 +18,7 @@ public:
 	void drawEffect();
 	void togglePresets();
 
-private:
+protected:
 	int m_thresholdLevel;		// value where the threshold level occurs.
 	int m_thresholdType;		// type of threshold
 
