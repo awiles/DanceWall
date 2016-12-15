@@ -14,6 +14,7 @@ DanceWall::DanceWall()
 	m_effectMap[DW::colorMapEffect] = new ColorMapEffect();
 	m_effectMap[DW::warpEffect] = new WarpEffect();
 	m_effectMap[DW::motionFlowEffect] = new MotionFlowEffect();
+	m_effectMap[DW::trackingEffect] = new TrackingEffect();
 	m_curEffect = DW::colorImage;
 
 	// set-up the videocapture object.
@@ -106,6 +107,9 @@ bool DanceWall::onKeyPress( int keyPress)
 		break;
 	case 'o':
 		effect = DW::motionFlowEffect;
+		break;
+	case 'a':
+		effect = DW::trackingEffect;
 		break;
 	case 'p':  // toggle through different colormaps.
 		m_effectMap[m_curEffect]->toggleColorMaps();

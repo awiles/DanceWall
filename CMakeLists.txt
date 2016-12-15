@@ -52,6 +52,9 @@ if(openExternals_FOUND)
 	#opencv
 	set(DanceWall_OPENCV_DIR ${openExternals_OPENCV_DIR})
 	list( APPEND CMAKE_PREFIX_PATH ${DanceWall_OPENCV_DIR} )
+		#need the Haar Cascade files.
+		configure_file(${openExternals_OPENCV_DIR}/share/OpenCV/haarcascades/haarcascade_frontalface_alt2.xml ${CMAKE_BINARY_DIR}/resources/haarcascade_frontalface_alt2.xml)
+		configure_file(${openExternals_OPENCV_DIR}/share/OpenCV/haarcascades/haarcascade_eye_tree_eyeglasses.xml ${CMAKE_BINARY_DIR}/resources/haarcascade_eye_tree_eyeglasses.xml)
 	
 	# #boost
 	# set(DanceWall_BOOST_DIR ${openExternals_BOOST_DIR})
@@ -81,7 +84,7 @@ endif()
 find_package(OpenCV REQUIRED)
 
 ########  DANCE WALL  ########
-include_directories(${OpenCV_INCLUDE_DIRs})
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 set(DanceWall_SRCS
 	DanceWall.cxx
@@ -93,6 +96,7 @@ set(DanceWall_SRCS
 	LineEffect.cxx
 	MotionFlowEffect.cxx
 	ThresholdEffect.cxx
+	TrackingEffect.cxx
 	WarpEffect.cxx
 	main.cxx)
 	
@@ -106,6 +110,7 @@ set(DanceWall_HDRS
 	LineEffect.h
 	MotionFlowEffect.h
 	ThresholdEffect.h
+	TrackingEffect.h
 	Warpeffect.h)
 
 add_executable(DanceWall ${DanceWall_SRCS} ${DanceWall_HDRS})

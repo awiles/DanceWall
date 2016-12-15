@@ -2,7 +2,7 @@
 #define DW_DanceWall
 
 // different effects.
-enum DW { colorImage =0, thresholdEffect, edgeEffect, cartoonEffect, lineEffect, colorMapEffect, warpEffect, motionFlowEffect};
+enum DW { colorImage =0, thresholdEffect, edgeEffect, cartoonEffect, lineEffect, colorMapEffect, warpEffect, motionFlowEffect, trackingEffect};
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
@@ -13,6 +13,7 @@ enum DW { colorImage =0, thresholdEffect, edgeEffect, cartoonEffect, lineEffect,
 #include "LineEffect.h"
 #include "MotionFlowEffect.h"
 #include "ThresholdEffect.h"
+#include "TrackingEffect.h"
 #include "WarpEffect.h"
 
 using namespace cv;
