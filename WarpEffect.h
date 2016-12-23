@@ -12,6 +12,7 @@ using namespace std;
 class WarpEffect : public AbstractEffect {
 public:
 	WarpEffect();
+	virtual string const className() { return "WarpEffect";}
 	void init();
 	void drawEffect();
 	void togglePresets();

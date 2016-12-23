@@ -4,18 +4,29 @@ TrackingEffect::TrackingEffect()
 {
 	// constructor.
 	this->init();
-	
+
 }
 
 void TrackingEffect::init()
 {
+	// initialize the sub-effect.
+	this->m_subEffect = 0;
+
 	// initialize the cascades.
 	this->m_faceCascade.load("resources/haarcascade_frontalface_alt2.xml");
 	this->m_eyesCascade.load("resources/haarcascade_eye_tree_eyeglasses.xml");
+	this->m_palmCascade.load("resources/haarcascade_palm.xml");
+	this->m_closedPalmCascade.load("resources/haarcascade_closed_frontal_palm.xml");
+	this->m_fistCascade.load("resources/haarcascade_fist.xml");
+
+	// motion detector, init.
+	this->m_bFirstFrame = true;
 
 	// set default for colormaps not to be used, but this can be changed in presets.
 	this->m_bApplyColorMap = false;
-	
+
+	this->m_debug = true;
+
 	return;
 }
 
@@ -26,16 +37,37 @@ void TrackingEffect::drawEffect()
 		cout << "TrackingEffect Warning: Last frame is empty." << endl;
 		return;
 	}
-	
-	
-	this->drawHappyFaces();	
+
+	switch(this->m_subEffect) {
+	case 0:
+		this->drawHappyFaces();	
+		break;
+	case 1:
+		this->drawMotion();
+		break;
+	case 2:
+		this->drawBGSubtraction();
+		break;
+	case 3: 
+		this->drawHandTracking();
+		break;
+	case 4:
+		this->drawHandSpots();
+		break;
+	default:
+		cout << "TrackingEffect Error: Incorrect subeffect attempted." << endl;
+		break;
+	}
 
 	return;
 }
 
 void TrackingEffect::togglePresets()
 {
-	this->m_bApplyColorMap = this->m_bApplyColorMap ? false:true;
+	this->m_subEffect++;
+
+	if( this->m_subEffect >= DW_TE_MAXSUBEFFECTS)
+		this->m_subEffect = 0;
 }
 
 void TrackingEffect::drawHappyFaces()
@@ -51,7 +83,7 @@ void TrackingEffect::drawHappyFaces()
 	// detect faces.
 	this->m_faces.clear();
 	this->m_faceCascade.detectMultiScale(bwFrame, this->m_faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30,30));
-	
+
 	// draw yellow circles for the faces.
 	for( int i=0; i< this->m_faces.size(); i++ )
 	{
@@ -76,4 +108,129 @@ void TrackingEffect::drawHappyFaces()
 			circle( this->m_outFrame, center, radius, Scalar(0, 0, 0), -1, 8, 0);
 		}
 	}
+}
+
+void TrackingEffect::drawHandSpots()
+{
+	//initialize outframe
+	this->m_lastFrame.copyTo(this->m_outFrame);
+
+	// create a grayscale image to process.
+	Mat bwFrame;
+	cvtColor(this->m_lastFrame, bwFrame, CV_BGR2GRAY);
+	equalizeHist(bwFrame, bwFrame);
+
+	// detect palms.
+	this->m_palms.clear();
+	this->m_palmCascade.detectMultiScale(bwFrame, this->m_palms, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30,30));
+
+	// draw pink circles for the hands.
+	for( int i=1; i<this->m_palms.size(); i++ )
+	{
+		// this is the center & radius of the hand.
+		Point center( m_palms[i].x + m_palms[i].width*0.5, m_palms[i].y + m_palms[i].height*0.5 );
+		int radius = max( m_palms[i].width, m_palms[i].height);
+		// draw a pink round circle for the hands.
+		circle( this->m_outFrame, center, radius, Scalar(213,0,255), -1 /*filled*/, 8, 0);
+	}
+
+	//// detect closed palms.
+	//this->m_closedPalms.clear();
+	//this->m_closedPalmCascade.detectMultiScale(bwFrame, this->m_closedPalms, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30,30));
+
+	//// draw blue circles for the hands.
+	//for( int i=1; i<this->m_closedPalms.size(); i++ )
+	//{
+	//	// this is the center & radius of the hand.
+	//	Point center( m_closedPalms[i].x + m_closedPalms[i].width*0.5, m_closedPalms[i].y + m_closedPalms[i].height*0.5 );
+	//	int radius = max( m_closedPalms[i].width, m_closedPalms[i].height);
+	//	// draw a pink round circle for the hands.
+	//	circle( this->m_outFrame, center, radius, Scalar(255,0,0), -1 /*filled*/, 8, 0);
+	//}
+
+	// detect closed palms.
+	this->m_fists.clear();
+	this->m_fistCascade.detectMultiScale(bwFrame, this->m_fists, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE, Size(30,30));
+
+	// draw red circles for the fists.
+	for( int i=1; i<this->m_fists.size(); i++ )
+	{
+		// this is the center & radius of the hand.
+		Point center( m_fists[i].x + m_fists[i].width*0.5, m_fists[i].y + m_fists[i].height*0.5 );
+		int radius = max( m_fists[i].width, m_fists[i].height);
+		// draw a pink round circle for the hands.
+		circle( this->m_outFrame, center, radius, Scalar(0,0,255), -1 /*filled*/, 8, 0);
+	}
+
+}
+
+void TrackingEffect::drawBGSubtraction()
+{
+	// initilize out frame to black.
+	this->doBGSubtraction();
+	this->m_fgMask.copyTo(this->m_outFrame);
+}
+
+void TrackingEffect::drawHandTracking()
+{
+	this->m_handTracker.setInputImage(this->m_lastFrame);
+	this->m_handTracker.process();
+	this->m_outFrame = this->m_handTracker.getOutputImage();
+}
+
+void TrackingEffect::drawMotion()
+{
+	if( this->m_bFirstFrame )
+	{
+		int h = this->m_lastFrame.rows;
+		int w = this->m_lastFrame.cols;
+		this->m_prevFrame = this->m_lastFrame.clone();
+		this->m_motionHistory = Mat::Mat(h, w, CV_32FC1, Scalar(0,0,0) );
+		this->m_mgMask = Mat::Mat(h, w, CV_8UC1, Scalar(0,0,0) );
+		this->m_mgOrient = Mat::Mat(h, w, CV_32FC1, Scalar(0,0,0) ); 
+		this->m_segMask = Mat::Mat(h, w, CV_32FC1, Scalar(0,0,0) );
+		this->m_bFirstFrame = false;
+	}
+
+	// create a diff image.
+	absdiff(this->m_lastFrame, this->m_prevFrame, this->m_frameDiff);
+	this->showDebugImage("Frame Diff", this->m_frameDiff);
+
+	// convert to grayscale.
+	cvtColor(this->m_frameDiff, this->m_grayDiff, CV_BGR2GRAY);
+	this->showDebugImage("Gray Diff", this->m_grayDiff);
+
+	// threshold.
+	threshold(this->m_grayDiff,this->m_motionMask, 32, 255, 0);
+	this->showDebugImage("Motion Mask", this->m_motionMask);
+
+	// compute timestamp.
+	double timestamp = 1000.0 * clock()/CLOCKS_PER_SEC;
+
+	// let's update the motion history, compute the gradient and segment.
+	updateMotionHistory(this->m_motionMask, this->m_motionHistory, timestamp, 0.05);
+	calcMotionGradient(this->m_motionHistory, this->m_mgMask, this->m_mgOrient, 5, 12500, 3);
+	segmentMotion(this->m_motionHistory, this->m_segMask, this->m_segBounds, timestamp, 32);
+
+	// initialize outframe to the gray diff image.
+	this->m_outFrame = this->m_grayDiff.clone();
+
+	// cycle through the segments and draw rectangles around the ones we find.
+	int cnt = 0;
+	for( int i=0; i<m_segBounds.size(); i++ )
+	{
+		Rect rec = this->m_segBounds[i];
+		if( rec.area() > 5000 && rec.area() < 70000 )
+		{
+			cnt++;
+			rectangle(this->m_outFrame, rec, Scalar(255,255,255), 3);
+		}
+	}
+
+	cout << "Found " << this->m_segBounds.size() << " segments, but filtered down to " << cnt << endl;
+
+	// copy the current frame to previous for next time round.
+	this->m_prevFrame = this->m_lastFrame.clone();
+
+	
 }

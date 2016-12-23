@@ -18,7 +18,8 @@ DanceWall::DanceWall()
 	m_curEffect = DW::colorImage;
 
 	// set-up the videocapture object.
-	m_camera = new VideoCapture(0);
+	this->m_cameraID = 0;
+	this->m_camera = new VideoCapture(this->m_cameraID);
 }
 
 DanceWall::~DanceWall()
@@ -46,13 +47,24 @@ bool DanceWall::init()
 
 	// TODO: add feature to set best resolution
 	// set to 720p on my laptop.
-	//cap.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
-	//cap.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
+	//m_camera->set(CV_CAP_PROP_FRAME_WIDTH, 1280);
+	//m_camera->set(CV_CAP_PROP_FRAME_HEIGHT, 720);
 
 	// set-up the window.
 	namedWindow("Dance Wall", CV_WINDOW_NORMAL); // create a window called MyVideo
 
 	return true;
+}
+
+bool DanceWall::changeCamera()
+{
+	this->m_cameraID++;
+	if(this->m_cameraID >= DW_MAX_CAMERAS)
+		this->m_cameraID = 0;
+
+	cvDestroyAllWindows();
+	this->m_camera->open(this->m_cameraID);
+	return this->init();
 }
 
 bool DanceWall::updateFrame()
@@ -65,9 +77,9 @@ bool DanceWall::updateFrame()
 		return false;
 	}
 
-	m_effectMap[m_curEffect]->addNewFrame(&this->m_inFrame);
+	m_effectMap[m_curEffect]->addNewFrame(this->m_inFrame);
 	m_effectMap[m_curEffect]->drawEffect();
-	m_effectMap[m_curEffect]->getOutFrame(&this->m_outFrame);
+	this->m_outFrame = m_effectMap[m_curEffect]->getOutFrame();
 
 	// broadcast.
 	imshow("Dance Wall", this->m_outFrame); //show the frame 
@@ -83,38 +95,43 @@ bool DanceWall::onKeyPress( int keyPress)
 	bool bParm = false;
 	switch((char)keyPress) 
 	{
-	case 'c': 
+	case '1': 
 		effect = DW::colorImage;
 		break;
-	case 't': 
+	case '2': 
 		effect = DW::thresholdEffect;
 		break;
-	case 'e': 
+	case '3': 
 		effect = DW::edgeEffect;
 		break;
-	case 'r': 
+	case '4': 
 		effect = DW::cartoonEffect;
 		break;
-	case 'l': 
+	case '5': 
 		effect = DW::lineEffect;
 		break;
-	case 'm': 
+	case '6': 
 		effect = DW::colorMapEffect;
-		cout << "Detected m key press..." << endl;
 		break;
-	case 'w': 
+	case '7': 
 		effect = DW::warpEffect;
 		break;
-	case 'o':
+	case '8':
 		effect = DW::motionFlowEffect;
 		break;
-	case 'a':
+	case '9':
 		effect = DW::trackingEffect;
 		break;
-	case 'p':  // toggle through different colormaps.
-		m_effectMap[m_curEffect]->toggleColorMaps();
+	case 'c':
+		this->changeCamera();
+		break;
+	case 'm':  // toggle through different colormaps.
+		m_effectMap[m_curEffect]->changeColorMap();
 		bParm = true;
-		cout << "Detected p key press..." << endl;
+		break;
+	case 'o': // turn colormap effect on and off.
+		m_effectMap[m_curEffect]->toggleColorMapsOn();
+		bParm = true;
 		break;
 	case 27: // 'esc' key
 		cout << "esc key pressed, exiting..." << endl;

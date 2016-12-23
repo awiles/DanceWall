@@ -23,7 +23,9 @@ void EdgeEffect::drawEffect()
 		cout << "EdgeEffect Warning: Last frame is empty." << endl;
 		return;
 	}
-	// let's draw the item here.
+	
+	//TODO: this->doBGSubtraction();
+
 	// convert to B&W
 	Mat bwFrame;
 	cvtColor(this->m_lastFrame, bwFrame, CV_BGR2GRAY);

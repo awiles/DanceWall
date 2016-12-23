@@ -12,6 +12,7 @@ using namespace std;
 class EdgeEffect : public AbstractEffect {
 public:
 	EdgeEffect();
+	virtual string const className() { return "EdgeEffect";}
 	void init();
 	void drawEffect();
 	void togglePresets();

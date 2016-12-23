@@ -12,6 +12,7 @@ using namespace std;
 class CartoonEffect : public AbstractEffect {
 public:
 	CartoonEffect();
+	virtual string const className() { return "CartoonEffect";}
 	void init();
 	void drawEffect();
 	void togglePresets();

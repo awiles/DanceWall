@@ -12,6 +12,7 @@ using namespace std;
 class MotionFlowEffect : public AbstractEffect {
 public:
 	MotionFlowEffect();
+	virtual string const className() { return "MotionFlowEffect";}
 	void init();
 	void drawEffect();
 	void togglePresets();

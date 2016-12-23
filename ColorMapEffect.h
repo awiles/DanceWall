@@ -14,6 +14,7 @@ using namespace std;
 class ColorMapEffect : public AbstractEffect {
 public:
 	ColorMapEffect();
+	virtual string const className() { return "ColorMapEffect";}
 	void init();
 	void drawEffect();
 	void togglePresets();

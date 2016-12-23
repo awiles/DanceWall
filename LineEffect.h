@@ -15,6 +15,7 @@ using namespace std;
 class LineEffect : public AbstractEffect {
 public:
 	LineEffect();
+	virtual string const className() { return "LineEffect";}
 	void init();
 	void drawEffect();
 	void togglePresets();

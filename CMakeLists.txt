@@ -53,8 +53,15 @@ if(openExternals_FOUND)
 	set(DanceWall_OPENCV_DIR ${openExternals_OPENCV_DIR})
 	list( APPEND CMAKE_PREFIX_PATH ${DanceWall_OPENCV_DIR} )
 		#need the Haar Cascade files.
-		configure_file(${openExternals_OPENCV_DIR}/share/OpenCV/haarcascades/haarcascade_frontalface_alt2.xml ${CMAKE_BINARY_DIR}/resources/haarcascade_frontalface_alt2.xml)
-		configure_file(${openExternals_OPENCV_DIR}/share/OpenCV/haarcascades/haarcascade_eye_tree_eyeglasses.xml ${CMAKE_BINARY_DIR}/resources/haarcascade_eye_tree_eyeglasses.xml)
+		configure_file(${openExternals_OPENCV_DIR}/share/OpenCV/haarcascades/haarcascade_frontalface_alt2.xml ${CMAKE_BINARY_DIR}/resources/haarcascade_frontalface_alt2.xml COPYONLY)
+		
+		configure_file(${openExternals_OPENCV_DIR}/share/OpenCV/haarcascades/haarcascade_eye_tree_eyeglasses.xml ${CMAKE_BINARY_DIR}/resources/haarcascade_eye_tree_eyeglasses.xml COPYONLY)
+		
+		configure_file(${CMAKE_SOURCE_DIR}/resources/haarcascade_palm.xml ${CMAKE_BINARY_DIR}/resources/haarcascade_palm.xml COPYONLY)
+		
+		configure_file(${CMAKE_SOURCE_DIR}/resources/haarcascade_closed_frontal_palm.xml ${CMAKE_BINARY_DIR}/resources/haarcascade_closed_frontal_palm.xml COPYONLY)
+		
+		configure_file(${CMAKE_SOURCE_DIR}/resources/haarcascade_fist.xml ${CMAKE_BINARY_DIR}/resources/haarcascade_fist.xml COPYONLY)
 	
 	# #boost
 	# set(DanceWall_BOOST_DIR ${openExternals_BOOST_DIR})
@@ -88,11 +95,13 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 
 set(DanceWall_SRCS
 	DanceWall.cxx
+	DWObject.cxx
 	AbstractEffect.cxx
 	CartoonEffect.cxx
 	ColorEffect.cxx
 	ColorMapEffect.cxx
 	EdgeEffect.cxx
+	HandTracker.cxx
 	LineEffect.cxx
 	MotionFlowEffect.cxx
 	ThresholdEffect.cxx
@@ -102,11 +111,13 @@ set(DanceWall_SRCS
 	
 set(DanceWall_HDRS
 	DanceWall.h
+	DWObject.h
 	AbstractEffect.h
 	CartoonEffect.h
 	ColorEffect.h
 	ColorMapEffect.h
 	EdgeEffect.h 
+	HandTracker.h
 	LineEffect.h
 	MotionFlowEffect.h
 	ThresholdEffect.h

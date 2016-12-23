@@ -31,5 +31,5 @@ void ColorMapEffect::drawEffect()
 
 void ColorMapEffect::togglePresets()
 {
-	this->toggleColorMaps();
+	// TODO:
 }

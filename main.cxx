@@ -12,7 +12,11 @@ int main(int argc, char *argv[]){
 	DanceWall danceWall;
 
 	// main program loop.
-	danceWall.init();
+	if(!danceWall.init())
+	{
+		cout << "Failed to init camera. Exiting." << endl;
+		return -1;
+	}
 
 	while(bSuccess)
 	{

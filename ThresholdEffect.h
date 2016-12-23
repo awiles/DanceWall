@@ -14,6 +14,7 @@ using namespace std;
 class ThresholdEffect : public AbstractEffect {
 public:
 	ThresholdEffect();
+	virtual string const className() { return "ThresholdEffect";}
 	void init();
 	void drawEffect();
 	void togglePresets();

@@ -18,6 +18,7 @@ using namespace std;
 class ColorEffect : public AbstractEffect {
 public:
 	ColorEffect();
+	virtual string const className() { return "ColorEffect";}
 	void init();
 	void drawEffect();
 
