@@ -7,7 +7,8 @@
 #include <opencv2/opencv.hpp>
 #include "AbstractEffect.h"
 #include "HandTracker.h"
-#include "time.h"
+#include "SimpleMotionTracker.h"
+#include <time.h>
 
 using namespace cv;
 using namespace std;
@@ -47,16 +48,7 @@ protected:
 	HandTracker m_handTracker;
 
 	// motion detection.
-	bool m_bFirstFrame;		// is this the first frame.
-	Mat m_prevFrame;		// previous frame.
-	Mat m_frameDiff;		// difference between previous and current.
-	Mat m_grayDiff;			// gray scale version of the diff.
-	Mat m_motionMask;		// threshold of the grayscale diff.
-	Mat m_motionHistory;	
-	Mat m_mgMask;
-	Mat m_mgOrient;
-	Mat m_segMask;
-	vector<Rect> m_segBounds;
+	SimpleMotionTracker m_motionTracker;
 
 
 };

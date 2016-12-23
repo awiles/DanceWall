@@ -18,7 +18,7 @@ HandTracker::~HandTracker()
 
 void HandTracker::setInputImage(Mat input)
 {
-	this->m_inputImage = input;
+	this->m_inputImage = input.clone();
 }
 
 void HandTracker::process()

@@ -19,9 +19,6 @@ void TrackingEffect::init()
 	this->m_closedPalmCascade.load("resources/haarcascade_closed_frontal_palm.xml");
 	this->m_fistCascade.load("resources/haarcascade_fist.xml");
 
-	// motion detector, init.
-	this->m_bFirstFrame = true;
-
 	// set default for colormaps not to be used, but this can be changed in presets.
 	this->m_bApplyColorMap = false;
 
@@ -180,57 +177,15 @@ void TrackingEffect::drawHandTracking()
 
 void TrackingEffect::drawMotion()
 {
-	if( this->m_bFirstFrame )
+	this->m_motionTracker.setInputImage(this->m_lastFrame);
+	this->m_motionTracker.process();
+	vector<Point> tmp = this->m_motionTracker.getMotionCentroids();
+
+	this->m_outFrame = this->m_lastFrame.clone();
+
+	// draw some circles on the image where motion is detected.
+	for( int i= 0; i<tmp.size(); i++)
 	{
-		int h = this->m_lastFrame.rows;
-		int w = this->m_lastFrame.cols;
-		this->m_prevFrame = this->m_lastFrame.clone();
-		this->m_motionHistory = Mat::Mat(h, w, CV_32FC1, Scalar(0,0,0) );
-		this->m_mgMask = Mat::Mat(h, w, CV_8UC1, Scalar(0,0,0) );
-		this->m_mgOrient = Mat::Mat(h, w, CV_32FC1, Scalar(0,0,0) ); 
-		this->m_segMask = Mat::Mat(h, w, CV_32FC1, Scalar(0,0,0) );
-		this->m_bFirstFrame = false;
-	}
-
-	// create a diff image.
-	absdiff(this->m_lastFrame, this->m_prevFrame, this->m_frameDiff);
-	this->showDebugImage("Frame Diff", this->m_frameDiff);
-
-	// convert to grayscale.
-	cvtColor(this->m_frameDiff, this->m_grayDiff, CV_BGR2GRAY);
-	this->showDebugImage("Gray Diff", this->m_grayDiff);
-
-	// threshold.
-	threshold(this->m_grayDiff,this->m_motionMask, 32, 255, 0);
-	this->showDebugImage("Motion Mask", this->m_motionMask);
-
-	// compute timestamp.
-	double timestamp = 1000.0 * clock()/CLOCKS_PER_SEC;
-
-	// let's update the motion history, compute the gradient and segment.
-	updateMotionHistory(this->m_motionMask, this->m_motionHistory, timestamp, 0.05);
-	calcMotionGradient(this->m_motionHistory, this->m_mgMask, this->m_mgOrient, 5, 12500, 3);
-	segmentMotion(this->m_motionHistory, this->m_segMask, this->m_segBounds, timestamp, 32);
-
-	// initialize outframe to the gray diff image.
-	this->m_outFrame = this->m_grayDiff.clone();
-
-	// cycle through the segments and draw rectangles around the ones we find.
-	int cnt = 0;
-	for( int i=0; i<m_segBounds.size(); i++ )
-	{
-		Rect rec = this->m_segBounds[i];
-		if( rec.area() > 5000 && rec.area() < 70000 )
-		{
-			cnt++;
-			rectangle(this->m_outFrame, rec, Scalar(255,255,255), 3);
-		}
-	}
-
-	cout << "Found " << this->m_segBounds.size() << " segments, but filtered down to " << cnt << endl;
-
-	// copy the current frame to previous for next time round.
-	this->m_prevFrame = this->m_lastFrame.clone();
-
-	
+		circle(this->m_outFrame, tmp[i], 10, Scalar(255, 0, 0), 3 );
+	}	
 }

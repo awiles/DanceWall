@@ -104,6 +104,7 @@ set(DanceWall_SRCS
 	HandTracker.cxx
 	LineEffect.cxx
 	MotionFlowEffect.cxx
+	SimpleMotionTracker.cxx
 	ThresholdEffect.cxx
 	TrackingEffect.cxx
 	WarpEffect.cxx
@@ -120,6 +121,7 @@ set(DanceWall_HDRS
 	HandTracker.h
 	LineEffect.h
 	MotionFlowEffect.h
+	SimpleMotionTracker.h
 	ThresholdEffect.h
 	TrackingEffect.h
 	Warpeffect.h)
