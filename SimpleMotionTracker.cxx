@@ -1,4 +1,4 @@
-#include "SimpleMotionTracker.h"
+﻿#include "SimpleMotionTracker.h"
 
 SimpleMotionTracker::SimpleMotionTracker()
 {
@@ -89,4 +89,6 @@ bool SimpleMotionTracker::process()
 
 	// copy the current frame to previous for next time round.
 	this->m_prevFrame = this->m_inputImage.clone();
+
+    return true;
 }
