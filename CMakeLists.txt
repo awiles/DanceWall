@@ -28,7 +28,9 @@ if(WIN32)
     set(CMAKE_LIBRARY_PATH "C:\\Program Files (x86)\\Windows Kits\\8.0\\Lib\\win8\\um\\x64" CACHE PATH "Qt5 requires this.")
 	# Need wzunzip.exe for Boost download on windows.
 elseif(APPLE)
-    set(QT_DIR "/opt/Qt/5.2.1/clang_64" CACHE PATH "Need to set the Qt prefix for various things.")
+    # assume QT is installed to /opt/Qt
+    # need to use 5.4 with VTK 6.3 on Mac OSX Sierra.
+    set(QT_DIR "/opt/Qt/5.4/clang_64" CACHE PATH "Need to set the Qt prefix for various things.")
 else()
     set(QT_DIR "/opt/Qt/5.2.1/gcc_64" CACHE PATH "Need to set the Qt path in order to find it more easily." )
 endif()
