@@ -33,7 +33,7 @@ protected:
 	Mat m_outputImage;					// output image for display.
 
 	// contours.
-	vector<vector<Point>> m_contours;	// contour points.
+	vector<vector<Point> > m_contours;	// contour points.
 	vector<Vec4i> m_hierarchy;			// contour hierarchy.
 
 	// useful parameters.
