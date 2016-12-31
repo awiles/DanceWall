@@ -142,8 +142,13 @@ if(WIN32)
 		set(BUILD_TYPE "Release")
 		configure_file(
 			${CMAKE_SOURCE_DIR}/cmake/DanceWall-VS2012-64-dev.bat.in
-			${CMAKE_BINARY_DIR}/../DanceWall-VS2012-64-devRelease.bat )	
+			${CMAKE_BINARY_DIR}/../DanceWall-VS2012-64-devRelease.bat )
 	else()
 		message(WARNING "No launch batch files created for this IDE environment.")
 	endif()
+elseif(APPLE)
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/cmake/DanceWall-QtCreator-OSX-dev.sh.in
+        ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/DanceWall-QtCreator-OSX-dev.command )
+    file(COPY ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/DanceWall-QtCreator-OSX-dev.command DESTINATION ${CMAKE_BINARY_DIR}/../ FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 endif(WIN32)
