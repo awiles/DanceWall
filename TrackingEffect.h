@@ -8,6 +8,7 @@
 #include "AbstractEffect.h"
 #include "HandTracker.h"
 #include "SimpleMotionTracker.h"
+#include "MotionEffect.h"
 #include <time.h>
 
 using namespace cv;
@@ -49,6 +50,7 @@ protected:
 
 	// motion detection.
 	SimpleMotionTracker m_motionTracker;
+	MotionEffect m_motionEffect;
 
 
 };

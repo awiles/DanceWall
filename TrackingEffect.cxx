@@ -181,11 +181,15 @@ void TrackingEffect::drawMotion()
 	this->m_motionTracker.process();
 	vector<Point> tmp = this->m_motionTracker.getMotionCentroids();
 
-	this->m_outFrame = this->m_lastFrame.clone();
+	/*this->m_outFrame = this->m_lastFrame.clone();
 
 	// draw some circles on the image where motion is detected.
 	for( int i= 0; i<tmp.size(); i++)
 	{
 		circle(this->m_outFrame, tmp[i], 10, Scalar(255, 0, 0), 3 );
-	}	
+	}*/
+
+	this->m_motionEffect.addSeedPoints(tmp);
+	this->m_motionEffect.process();
+	this->m_outFrame = this->m_motionEffect.getOutputImage();
 }
