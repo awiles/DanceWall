@@ -52,6 +52,7 @@ bool DanceWall::init()
 
 	// set-up the window.
 	namedWindow("Dance Wall", CV_WINDOW_NORMAL); // create a window called MyVideo
+	cvSetWindowProperty("Dance Wall", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
 
 	return true;
 }
@@ -70,6 +71,8 @@ bool DanceWall::changeCamera()
 bool DanceWall::updateFrame()
 {
 	bool bSuccess = this->m_camera->read(this->m_inFrame); // read a new frame from video.
+	// flip the image from the web cam.
+	flip(this->m_inFrame, this->m_inFrame, 1);
 
 	if(!bSuccess) //if no success, break loop
 	{
