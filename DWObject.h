@@ -21,7 +21,7 @@ protected:
 	void printError( const string& msg );
 	void showDebugImage( const string& name, Mat image);
 	// helpful functions for incrementing parameters.
-	void nextOneWayParm( int* curValue, int maxVal, int minVal, int increment);
+	void nextOneWayParm( int* curValue, int maxVal, int minVal=0, int increment=1);
 	void nextTwoWayParm( double* curValue, double* curRate, double minVal, double maxVal);
 	
 	// variables

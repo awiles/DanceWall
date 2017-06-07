@@ -36,7 +36,7 @@ void DWObject::showDebugImage(const string& name, Mat image)
 }
 // This function is used to step up a value until a maximum and
 // then reset to the minimum value (default=0).
-void DWObject::nextOneWayParm(int* curValue, int maxVal, int minVal=0, int increment=0)
+void DWObject::nextOneWayParm(int* curValue, int maxVal, int minVal, int increment)
 {
 	// sanity check.
 	if( maxVal < minVal)

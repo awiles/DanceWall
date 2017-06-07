@@ -29,9 +29,7 @@ Mat AbstractEffect::getOutFrame()		// obtain the latest graphic
 
 void AbstractEffect::changeColorMap()
 {
-	this->m_currentColorMap++;
-	if( this->m_currentColorMap < 0 || this->m_currentColorMap >= DW_MAX_COLORMAPS)
-		this->m_currentColorMap = 0;
+	this->nextOneWayParm(&this->m_currentColorMap, DW_MAX_COLORMAPS);
 }
 
 void AbstractEffect::toggleColorMapsOn()
