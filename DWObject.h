@@ -20,6 +20,9 @@ protected:
 	virtual string const className() = 0;
 	void printError( const string& msg );
 	void showDebugImage( const string& name, Mat image);
+	// helpful functions for incrementing parameters.
+	void nextOneWayParm( int* curValue, int maxVal, int minVal, int increment);
+	void nextTwoWayParm( double* curValue, double* curRate, double minVal, double maxVal);
 	
 	// variables
 	bool m_debug;
