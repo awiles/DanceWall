@@ -20,6 +20,7 @@ public:
 	void init();
 	void drawEffect();
 	void togglePresets();
+	virtual void getRandomConfig(bool doGrid=false);
 
 private:
 	// for the linear waves
@@ -29,6 +30,7 @@ private:
 
 	// for the swirl, see: http://scikit-image.org/docs/dev/auto_examples/transform/plot_swirl.html
 	double m_strength;		// indicates the strength of the swirl
+	double m_strengthRate;  // rate at which the strength changes.
 	double m_radius;		// indicates the swirl extent
 	double m_rotation;		// adds a rotation angle to the swirl
 

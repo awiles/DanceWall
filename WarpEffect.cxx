@@ -9,14 +9,15 @@ WarpEffect::WarpEffect()
 void WarpEffect::init()
 {
 	// for the linear waves.
-	this->m_magnitude = 5.0;
+	this->m_magnitude = 10.0;
 	this->m_period = 5.0;
 	this->m_periodRate = 0.1;
 
 	// for the swirl.
-	this->m_strength = 0.1;
-	this->m_radius = 120;
-	this->m_rotation = 0;
+	this->m_strength = 1;
+	this->m_strengthRate = 0.05;
+	this->m_radius = 240;
+	this->m_rotation = 1;
 
 	// other general
 	this->m_currentColorMap = 4;
@@ -62,7 +63,7 @@ void WarpEffect::drawEffect()
 	cj = cols/2;
 
 	// compute the rho boundary
-	float rhoBound = 0.95 * min(ci,cj);  // take 95% of dimension
+	float rhoBound = 1.0 * min(ci,cj);  // take 95% of dimension
 	//TODO: test using ellipse instead of circle, e.g. mahalanobis distance.
 
 	// create mapping
@@ -108,7 +109,7 @@ void WarpEffect::drawEffect()
 				case DW_Warp::swirl:
 					// compute new angle coordinate.
 					phiPrime = this->m_rotation + this->m_strength 
-						* exp(-1*rho/swirlRadius + phi);
+						* exp(-1*rho/swirlRadius) + phi;
 					// unwrap back into cartesian & compute distortion.
 					dx = rho * cos(phiPrime) - x;
 					dy = rho * sin(phiPrime) - y;
@@ -135,13 +136,22 @@ void WarpEffect::drawEffect()
 
 	// change the period to create wave effect.
 	this->nextTwoWayParm(&this->m_period, &this->m_periodRate, 2.0, 15.0);
+	// change the swirl effect.
+	this->nextTwoWayParm(&this->m_strength, &this->m_strengthRate, -2.0, 2.0);
 
 	return;
 }
 
 void WarpEffect::togglePresets()
 {
-	this->m_currentWarpType++;
-	if( this->m_currentWarpType < 0 || this->m_currentWarpType >= DW_WE_MAXWARPEFFECTS)
-		this->m_currentWarpType = 0;
+	this->nextOneWayParm(&this->m_currentWarpType, DW_WE_MAXWARPEFFECTS);
+}
+
+void WarpEffect::getRandomConfig(bool doGrid)
+{
+	AbstractEffect::getRandomConfig(doGrid);
+	
+	// get random warp type.
+	this->m_currentWarpType = this->getRandInt(DW_WE_MAXWARPEFFECTS);
+
 }

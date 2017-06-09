@@ -33,3 +33,13 @@ void ColorMapEffect::togglePresets()
 {
 	// TODO:
 }
+
+void ColorMapEffect::getRandomConfig(bool doGrid)
+{
+	AbstractEffect::getRandomConfig(doGrid);
+	
+	// if doing grid, always apply colormap.
+	if( this->m_gridOrder > 1 )
+		this->m_bApplyColorMap = true;
+
+}

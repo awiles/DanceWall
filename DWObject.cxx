@@ -34,6 +34,22 @@ void DWObject::showDebugImage(const string& name, Mat image)
 		imshow( winname, image);
 	}
 }
+
+// This function returns a random integer between max and min.
+int DWObject::getRandInt(int maxVal, int minVal)
+{
+	// sanity check.
+	if( maxVal < minVal)
+	{
+		this->printError("Max/Min parameters in getRandInt are invalid.");
+		return -1;
+	}
+
+	int range = maxVal - minVal;
+	int val = (rand() % (range + 1)) + minVal;
+	return val;
+}
+
 // This function is used to step up a value until a maximum and
 // then reset to the minimum value (default=0).
 void DWObject::nextOneWayParm(int* curValue, int maxVal, int minVal, int increment)

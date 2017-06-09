@@ -18,6 +18,7 @@ public:
 	void init();
 	void drawEffect();
 	void togglePresets();
+	virtual void getRandomConfig(bool doGrid=false);
 
 protected:
 	int m_thresholdLevel;		// value where the threshold level occurs.

@@ -6,7 +6,7 @@ HandTracker::HandTracker()
 	this->m_morphElement = getStructuringElement(CV_SHAPE_RECT, Size(9,9), Point(4,4));
 
 	// set debug for now.
-	this->m_debug = true;
+	this->m_debug = false;
 
 }
 
@@ -44,7 +44,7 @@ bool HandTracker::doFilterAndThreshold()
 	}
 
 	// show image if m_debug is set.
-	showDebugImage("Input Image", this->m_inputImage);
+	//showDebugImage("Input Image", this->m_inputImage);
 	
 	// soften the image.
 	GaussianBlur( this->m_inputImage, this->m_tempImage3, Size(11,11), 0, 0);
