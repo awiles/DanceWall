@@ -75,12 +75,16 @@ void ColorEffect::drawEffect()
 
 void ColorEffect::togglePresets()
 {
-	this->m_colorType++;
-	if( this->m_colorType > DW_COLOR_FULL)
-	{
-		this->m_colorType = 0;
-		
-	}
+	this->nextOneWayParm(&this->m_colorType, DW_GRAYSCALE);
 	cout << "Change color type to: " << this->getColorType() << endl;
 	return;
+}
+
+void ColorEffect::getRandomConfig(bool doGrid)
+{
+	AbstractEffect::getRandomConfig(doGrid);
+	
+	// let's get random color type.
+	setColorType(getRandInt(DW_COLOR_FULL));
+
 }

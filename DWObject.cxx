@@ -34,3 +34,55 @@ void DWObject::showDebugImage(const string& name, Mat image)
 		imshow( winname, image);
 	}
 }
+
+// This function returns a random integer between max and min.
+int DWObject::getRandInt(int maxVal, int minVal)
+{
+	// sanity check.
+	if( maxVal < minVal)
+	{
+		this->printError("Max/Min parameters in getRandInt are invalid.");
+		return -1;
+	}
+
+	int range = maxVal - minVal;
+	int val = (rand() % (range + 1)) + minVal;
+	return val;
+}
+
+// This function is used to step up a value until a maximum and
+// then reset to the minimum value (default=0).
+void DWObject::nextOneWayParm(int* curValue, int maxVal, int minVal, int increment)
+{
+	// sanity check.
+	if( maxVal < minVal)
+	{
+		this->printError("Max/Min parameters in nextOneWayParm are invalid.");
+		return;
+	}
+
+	// increment and check for ceiling.
+	*curValue += increment;
+	if( *curValue >= maxVal)
+		*curValue = minVal;
+	return;
+}
+
+// This function is used to cycle a parameter through equal steps
+// up and down.
+void DWObject::nextTwoWayParm(double* curValue, double* curRate, double minVal, double maxVal)
+{
+	// sanity check.
+	if( maxVal < minVal)
+	{
+		this->printError("Max/Min parameters in nextTwoWayParm are invalid.");
+		return;
+	}
+
+	// change the parm value by the linear rate.
+	*curValue += *curRate;
+
+	// check for a change in the rate direction.
+	if( (*curValue < minVal) || (*curValue > maxVal) )
+		*curRate *= -1;
+}

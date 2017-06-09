@@ -26,6 +26,7 @@ public:
 	inline void setColorType(int colorType) {this->m_colorType = colorType;}
 	inline int getColorType() {return this->m_colorType;}
 	void togglePresets();
+	virtual void getRandomConfig(bool doGrid=false);
 
 private:
 	int m_colorType;

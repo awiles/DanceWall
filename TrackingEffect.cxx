@@ -22,7 +22,7 @@ void TrackingEffect::init()
 	// set default for colormaps not to be used, but this can be changed in presets.
 	this->m_bApplyColorMap = false;
 
-	this->m_debug = true;
+	this->m_debug = false;
 
 	return;
 }
@@ -61,10 +61,23 @@ void TrackingEffect::drawEffect()
 
 void TrackingEffect::togglePresets()
 {
-	this->m_subEffect++;
+	this->nextOneWayParm(&this->m_subEffect, DW_TE_MAXSUBEFFECTS );
+}
 
-	if( this->m_subEffect >= DW_TE_MAXSUBEFFECTS)
-		this->m_subEffect = 0;
+void TrackingEffect::getRandomConfig(bool doGrid)
+{
+	AbstractEffect::getRandomConfig(doGrid);
+	
+	// get random sub-type.
+	this->m_subEffect = this->getRandInt(DW_TE_MAXSUBEFFECTS-1);
+
+	// sometimes we always need to apply the colormap.
+	if( this->m_subEffect == 1)
+	{
+		this->m_bApplyColorMap = true;
+		this->setGridOrder(1); // This effect doesn't work well in a grid.
+	}
+
 }
 
 void TrackingEffect::drawHappyFaces()

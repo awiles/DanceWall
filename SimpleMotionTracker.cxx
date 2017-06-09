@@ -48,15 +48,15 @@ bool SimpleMotionTracker::process()
 
 	// create a diff image.
 	absdiff(this->m_inputImage, this->m_prevFrame, this->m_frameDiff);
-	this->showDebugImage("Frame Diff", this->m_frameDiff);
+	//this->showDebugImage("Frame Diff", this->m_frameDiff);
 
 	// convert to grayscale.
 	cvtColor(this->m_frameDiff, this->m_grayDiff, CV_BGR2GRAY);
-	this->showDebugImage("Gray Diff", this->m_grayDiff);
+	//this->showDebugImage("Gray Diff", this->m_grayDiff);
 
 	// threshold.
 	threshold(this->m_grayDiff,this->m_motionMask, 32, 255, 0);
-	this->showDebugImage("Motion Mask", this->m_motionMask);
+	//this->showDebugImage("Motion Mask", this->m_motionMask);
 
 	// compute timestamp.
 	double timestamp = 1000.0 * clock()/CLOCKS_PER_SEC;
@@ -83,7 +83,7 @@ bool SimpleMotionTracker::process()
 		}
 	}
 
-	this->showDebugImage("Tracked Motion", trackedMotionImage);
+	//this->showDebugImage("Tracked Motion", trackedMotionImage);
 
 	cout << "Found " << this->m_segBounds.size() << " segments, but filtered down to " << cnt << endl;
 

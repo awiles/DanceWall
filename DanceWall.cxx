@@ -20,6 +20,12 @@ DanceWall::DanceWall()
 	// set-up the videocapture object.
 	this->m_cameraID = 0;
 	this->m_camera = new VideoCapture(this->m_cameraID);
+
+	// random effects set-up.
+	this->m_bDoRandom = false;
+	this->m_nRandomChanges = 0;
+	this->m_startTime = clock();
+	srand(time(NULL));
 }
 
 DanceWall::~DanceWall()
@@ -80,6 +86,15 @@ bool DanceWall::updateFrame()
 		return false;
 	}
 
+	// are we doing random mode?
+	if(this->m_bDoRandom)
+	{
+		double duration = ( clock() - m_startTime ) / (double) CLOCKS_PER_SEC;
+		cout << "Time since last change: " << duration << " seconds." << endl;
+		if (duration > DW_EFFECT_TIME_LIMIT )
+			doNextRandom();
+	}
+
 	m_effectMap[m_curEffect]->addNewFrame(this->m_inFrame);
 	m_effectMap[m_curEffect]->drawEffect();
 	this->m_outFrame = m_effectMap[m_curEffect]->getOutFrame();
@@ -136,6 +151,14 @@ bool DanceWall::onKeyPress( int keyPress)
 		m_effectMap[m_curEffect]->toggleColorMapsOn();
 		bParm = true;
 		break;
+	case 'g': // increment grid order.
+		m_effectMap[m_curEffect]->incrementGridOrder();
+		bParm = true;
+		break;
+	case 'r': // toggle the random mode on.
+		this->m_bDoRandom = this->m_bDoRandom?false:true;
+		bParm = true;
+		break;
 	case 27: // 'esc' key
 		cout << "esc key pressed, exiting..." << endl;
 		bSuccess = false;
@@ -164,4 +187,22 @@ bool DanceWall::onKeyPress( int keyPress)
 	}
 
 	return bSuccess;
+}
+
+void DanceWall::doNextRandom()
+{
+	
+	// determine the next effect.
+	this->m_curEffect = this->getRandInt(m_effectMap.size()-1);
+
+	// do we want the grid effect this time?
+	this->m_nRandomChanges++;
+	bool doGrid = (m_nRandomChanges % DW_GRID_EFFECT_INTERVAL)?true:false;
+
+	m_effectMap[m_curEffect]->init();
+	m_effectMap[m_curEffect]->getRandomConfig(doGrid);
+
+
+	// reset start time.
+	this->m_startTime = clock();
 }

@@ -42,3 +42,13 @@ void EdgeEffect::togglePresets()
 	bool bColorMap = (this->m_bApplyColorMap)?false:true;
 	this->setColorMapApply(bColorMap);
 }
+
+void EdgeEffect::getRandomConfig(bool doGrid)
+{
+	AbstractEffect::getRandomConfig(doGrid);
+	
+	// if doing grid, always apply colormap.
+	if( this->m_gridOrder > 1 )
+		this->m_bApplyColorMap = true;
+
+}
