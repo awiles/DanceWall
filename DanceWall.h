@@ -6,9 +6,9 @@ enum DW { colorImage =0, thresholdEffect, edgeEffect, cartoonEffect, lineEffect,
 
 #define DW_MAX_CAMERAS 2
 // in random mode, change effect every 60 seconds
-#define DW_EFFECT_TIME_LIMIT 10.0
+#define DW_EFFECT_TIME_LIMIT 60.0
 // how often do we want to use the grid effect?
-#define DW_GRID_EFFECT_INTERVAL 2
+#define DW_GRID_EFFECT_INTERVAL 3
 
 #include <iostream>
 #include <opencv2/opencv.hpp>

@@ -152,6 +152,6 @@ void WarpEffect::getRandomConfig(bool doGrid)
 	AbstractEffect::getRandomConfig(doGrid);
 	
 	// get random warp type.
-	this->m_currentWarpType = this->getRandInt(DW_WE_MAXWARPEFFECTS);
+	this->m_currentWarpType = this->getRandInt(DW_WE_MAXWARPEFFECTS-1);
 
 }
