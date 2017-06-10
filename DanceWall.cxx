@@ -197,7 +197,7 @@ void DanceWall::doNextRandom()
 
 	// do we want the grid effect this time?
 	this->m_nRandomChanges++;
-	bool doGrid = (m_nRandomChanges % DW_GRID_EFFECT_INTERVAL)?true:false;
+	bool doGrid = (m_nRandomChanges % DW_GRID_EFFECT_INTERVAL)?false:true;
 
 	m_effectMap[m_curEffect]->init();
 	m_effectMap[m_curEffect]->getRandomConfig(doGrid);

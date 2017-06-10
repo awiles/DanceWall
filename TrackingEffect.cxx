@@ -71,11 +71,18 @@ void TrackingEffect::getRandomConfig(bool doGrid)
 	// get random sub-type.
 	this->m_subEffect = this->getRandInt(DW_TE_MAXSUBEFFECTS-1);
 
-	// sometimes we always need to apply the colormap.
-	if( this->m_subEffect == 1)
+	// sometimes we always need to apply the colormap or not use grid effect.
+	switch(this->m_subEffect)
 	{
+	case 1:
 		this->m_bApplyColorMap = true;
 		this->setGridOrder(1); // This effect doesn't work well in a grid.
+		break;
+	case 2:
+		this->m_bApplyColorMap = true;
+		break;
+	default:
+		break;
 	}
 
 }
